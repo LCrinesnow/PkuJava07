@@ -1,6 +1,8 @@
 package Five_Chess;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GobangGame {
 	// 定义达到赢条件的棋子数目
@@ -77,7 +79,7 @@ public class GobangGame {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			String inputStr = null;
 			//权值数组置0
-			int [][] Val_Chart=new int [22][22];
+			int [][] Val_Chart=new int [Chessboard.BOARD_SIZE][Chessboard.BOARD_SIZE];
 			for(int i=0;i<22;i++){
 				for(int j=0;j<22;j++){
 					Val_Chart[i][j]=0;
@@ -149,18 +151,38 @@ public class GobangGame {
 		/**
 		 * 计算机随机下棋
 		 */
-		public int[] computerDo(int Val_Cart[][]) {
-			
-			int posX = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
-			int posY = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
+
+		public int[] computerDo(int Val_Chart[][]) {
+			int max=0;
 			String[][] board = chessboard.getBoard();
-			while (board[posX][posY] != "十") {
-				posX = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
-				posY = (int) (Math.random() * (Chessboard.BOARD_SIZE - 1));
+			for(int i=0;i<Chessboard.BOARD_SIZE-1;i++){
+				for(int j=0;j<Chessboard.BOARD_SIZE-1;j++){
+					if(i+1==Chessboard.BOARD_SIZE||j+1==Chessboard.BOARD_SIZE) continue;
+					if(board[i+1][j+1]!="十"){
+						if(Val_Chart[i][j]>max){
+							max=Val_Chart[i][j];
+							System.out.println("i:"+i);
+							System.out.println("j:"+j);
+						}
+							
+					}
+				}
 			}
+			System.out.println("max:"+max);
+			int posX=0;
+		    int posY=0;
+			for(int i=0;i<22;i++){
+				for(int j=0;j<22;j++){
+					if(Val_Chart[i][j]==max)
+						 posX = i;
+					     posY = j;
+				}
+			}
+//			System.out.println("posx:"+posX);
+//			System.out.println("posy:"+posY);
+
+	
 			int[] result = { posX, posY };
-//			System.out.print(posX);
-//			System.out.print(posY);
 
 			return result;
 		}
@@ -210,20 +232,20 @@ public class GobangGame {
 			//[AI]
 			end1=i+1;//因为while跳出前－1
 			//左端点左边
-//			if((end1-1) >= 0&&Val_Chart[posX][end1-1]<row+1){
-//				Val_Chart[posX][end1-1]=row+1;
-//			}
-//			else if((end1-1) >= 0&&Val_Chart[posX][end1-1]>row+1){
-//				Val_Chart[posX][end1-1]=Val_Chart[posX][end1-1]+row+1;
-//			}
-//			//右端点右边
-//			if((end2+1) <= Chessboard.BOARD_SIZE-1&&Val_Chart[posX][end2+1]<row+1){
-//				Val_Chart[posX][end2+1]=row+1;
-//			}
-//			else if((end2+1) <= Chessboard.BOARD_SIZE-1&&Val_Chart[posX][end2+1]>row+1){
-//				Val_Chart[posX][end2+1]=Val_Chart[posX][end2+1]+row+1;
-//
-//			}
+			if((end1-1) >= 0&&Val_Chart[posX][end1-1]<row+1){
+				Val_Chart[posX][end1-1]=row+1;
+			}
+			else if((end1-1) >= 0&&Val_Chart[posX][end1-1]>row+1){
+				Val_Chart[posX][end1-1]=Val_Chart[posX][end1-1]+row+1;
+			}
+			//右端点右边
+			if((end2+1) <= Chessboard.BOARD_SIZE-1&&Val_Chart[posX][end2+1]<row+1){
+				Val_Chart[posX][end2+1]=row+1;
+			}
+			else if((end2+1) <= Chessboard.BOARD_SIZE-1&&Val_Chart[posX][end2+1]>row+1){
+				Val_Chart[posX][end2+1]=Val_Chart[posX][end2+1]+row+1;
+
+			}
 //			//[AI]
 //			printVal_Chart(Val_Chart);
 //			System.out.print(endi1+1+" ");
@@ -260,19 +282,19 @@ public class GobangGame {
 			//[AI]
 			end1=i+1;//因为while跳出前－1
 //			//上端点上边
-//			if((end1-1) >= 0&&Val_Chart[end1-1][posY]<col+1){
-//				Val_Chart[end1-1][posY]=col+1;
-//			}
-//			else if((end1-1) >= 0&&Val_Chart[end1-1][posY]>col+1){
-//				Val_Chart[end1-1][posY]=Val_Chart[end1-1][posY]+col+1;
-//			}
-//			//下端点下边
-//			if((end2+1) <= Chessboard.BOARD_SIZE-1&&Val_Chart[end2+1][posY]<col+1){
-//				Val_Chart[end2+1][posY]=col+1;
-//			}
-//			else if((end2+1) <= Chessboard.BOARD_SIZE-1&&Val_Chart[end2+1][posY]>col+1){
-//				Val_Chart[end2+1][posY]=Val_Chart[end2+1][posY]+col+1;
-//			}
+			if((end1-1) >= 0&&Val_Chart[end1-1][posY]<col+1){
+				Val_Chart[end1-1][posY]=col+1;
+			}
+			else if((end1-1) >= 0&&Val_Chart[end1-1][posY]>col+1){
+				Val_Chart[end1-1][posY]=Val_Chart[end1-1][posY]+col+1;
+			}
+			//下端点下边
+			if((end2+1) <= Chessboard.BOARD_SIZE-1&&Val_Chart[end2+1][posY]<col+1){
+				Val_Chart[end2+1][posY]=col+1;
+			}
+			else if((end2+1) <= Chessboard.BOARD_SIZE-1&&Val_Chart[end2+1][posY]>col+1){
+				Val_Chart[end2+1][posY]=Val_Chart[end2+1][posY]+col+1;
+			}
 			//[AI]
 //			printVal_Chart(Val_Chart);
 		//col_end  >＝4时纵向win
@@ -316,19 +338,19 @@ public class GobangGame {
 			endj1=j+1;
 			//[AI]
 			//左倾斜上端点左倾斜上方向
-//			if((endi1-1) >= 0&&(endj1-1) >= 0&&Val_Chart[endi1-1][endj1-1]<Left+1){
-//				Val_Chart[endi1-1][endj1-1]=Left+1;
-//			}
-//			else if((endi1-1) >= 0&&(endj1-1) >= 0&&Val_Chart[endi1-1][endj1-1]>Left+1){
-//				Val_Chart[endi1-1][endj1-1]=Val_Chart[endi1-1][endj1-1]+Left+1;
-//			}
-//			//左倾斜下端点左倾斜下方向
-//			if((endi2+1) <= Chessboard.BOARD_SIZE-1&&(endj2+1)<= Chessboard.BOARD_SIZE-1&&Val_Chart[endi2+1][endj2+1]<Left+1){
-//				Val_Chart[endi2+1][endj2+1]=Left+1;
-//			}
-//			else if((endi2+1) <= Chessboard.BOARD_SIZE-1&&(endj2+1)<= Chessboard.BOARD_SIZE-1&&Val_Chart[endi2+1][endj2+1]>Left+1){
-//				Val_Chart[endi2+1][endj2+1]=Val_Chart[endi2+1][endj2+1]+Left+1;
-//			}
+			if((endi1-1) >= 0&&(endj1-1) >= 0&&Val_Chart[endi1-1][endj1-1]<Left+1){
+				Val_Chart[endi1-1][endj1-1]=Left+1;
+			}
+			else if((endi1-1) >= 0&&(endj1-1) >= 0&&Val_Chart[endi1-1][endj1-1]>Left+1){
+				Val_Chart[endi1-1][endj1-1]=Val_Chart[endi1-1][endj1-1]+Left+1;
+			}
+			//左倾斜下端点左倾斜下方向
+			if((endi2+1) <= Chessboard.BOARD_SIZE-1&&(endj2+1)<= Chessboard.BOARD_SIZE-1&&Val_Chart[endi2+1][endj2+1]<Left+1){
+				Val_Chart[endi2+1][endj2+1]=Left+1;
+			}
+			else if((endi2+1) <= Chessboard.BOARD_SIZE-1&&(endj2+1)<= Chessboard.BOARD_SIZE-1&&Val_Chart[endi2+1][endj2+1]>Left+1){
+				Val_Chart[endi2+1][endj2+1]=Val_Chart[endi2+1][endj2+1]+Left+1;
+			}
 			//[AI]
 //			printVal_Chart(Val_Chart);
 
