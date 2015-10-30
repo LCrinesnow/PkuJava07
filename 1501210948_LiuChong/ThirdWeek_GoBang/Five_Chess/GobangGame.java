@@ -104,6 +104,9 @@ public class GobangGame {
 				} else {
 					// 计算机随机选择位置坐标
 					int[] computerPosArr = computerDo(Val_Chart);
+					System.out.println(computerPosArr[0]);
+					System.out.println(computerPosArr[1]);
+
 					chessman = Chessman.WHITE.getChessman();
 					chessboard.setBoard(computerPosArr[0], computerPosArr[1],
 							chessman,Val_Chart);
@@ -157,29 +160,36 @@ public class GobangGame {
 			String[][] board = chessboard.getBoard();
 			for(int i=0;i<Chessboard.BOARD_SIZE-1;i++){
 				for(int j=0;j<Chessboard.BOARD_SIZE-1;j++){
-					if(i+1==Chessboard.BOARD_SIZE||j+1==Chessboard.BOARD_SIZE) continue;
-					if(board[i+1][j+1]!="十"){
+//					System.out.println("val:"+Val_Chart[i][j]);
+//					System.out.println("i:"+i);
+//					System.out.println("j:"+j);
+//					if(i+1==Chessboard.BOARD_SIZE||j+1==Chessboard.BOARD_SIZE) continue;
+					
 						if(Val_Chart[i][j]>max){
 							max=Val_Chart[i][j];
 							System.out.println("i:"+i);
 							System.out.println("j:"+j);
+							if(board[i][j]=="十"){
+								posX=i;
+								posY=j;
+								System.out.println("i:"+i);
+								System.out.println("j:"+j);
+							}
+							else max=0;
 						}
-							
-					}
 				}
 			}
 			System.out.println("max:"+max);
-			int posX=0;
-		    int posY=0;
-			for(int i=0;i<22;i++){
-				for(int j=0;j<22;j++){
-					if(Val_Chart[i][j]==max)
-						 posX = i;
-					     posY = j;
-				}
-			}
-//			System.out.println("posx:"+posX);
-//			System.out.println("posy:"+posY);
+			
+//			for(int i=0;i<22;i++){
+//				for(int j=0;j<22;j++){
+//					if(Val_Chart[i][j]==max)
+//						 posX = i;
+//					     posY = j;
+//				}
+//			}
+			System.out.println("posx:"+posX);
+			System.out.println("posy:"+posY);
 
 	
 			int[] result = { posX, posY };
