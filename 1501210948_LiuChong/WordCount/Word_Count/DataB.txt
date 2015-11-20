@@ -1,0 +1,6 @@
+This is LC
+This is a test
+Only a test
+However what I am trying to do
+is to test my program
+This is file B
